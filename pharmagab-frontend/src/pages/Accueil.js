@@ -104,20 +104,42 @@ function Accueil() {
       </div>
 
       {/* ACTUALITÉS */}
-      <div className="container" style={{ marginTop: '40px' }}>
-        <h3 style={styles.sectionTitle}>Actualités & Conseils</h3>
-        <div style={styles.newsGrid}>
-          {[ { img: cmgs, t: "CNAMGS" }, { img: saison, t: "Santé" }, { img: phar, t: "Digital" } ].map((item, idx) => (
-            <div key={idx} className="hover-scale" style={styles.newsCard}>
-              <div style={{ ...styles.newsThumb, backgroundImage: `url(${item.img})` }}></div>
-              <div style={styles.newsContent}>
-                <h4 style={styles.newsTitle}>{item.t} au Gabon...</h4>
-                <button style={styles.newsLink}>En savoir plus <ExternalLink size={14} /></button>
-              </div>
-            </div>
-          ))}
+<div className="container" style={{ marginTop: '40px' }}>
+  <h3 style={styles.sectionTitle}>Actualités & Conseils</h3>
+  <div style={styles.newsGrid}>
+    {[ 
+      { 
+        img: cmgs, 
+        t: "CNAMGS", 
+        link: "https://www.cnamgs.ga/" // Lien officiel
+      }, 
+      { 
+        img: saison, 
+        t: "Santé", 
+        link: "https://www.sante.gouv.ga/" // Ministère de la santé
+      }, 
+      { 
+        img: phar, 
+        t: "Digital", 
+        link: "https://www.finances.gouv.ga/ministere/le-ministere/missions-et-organisation/le-numerique" // Exemple Digital
+      } 
+    ].map((item, idx) => (
+      <div key={idx} className="hover-scale" style={styles.newsCard}>
+        <div style={{ ...styles.newsThumb, backgroundImage: `url(${item.img})` }}></div>
+        <div style={styles.newsContent}>
+          <h4 style={styles.newsTitle}>{item.t} au Gabon...</h4>
+          {/* Modification ici : ajout du onClick pour ouvrir le lien */}
+          <button 
+            style={styles.newsLink} 
+            onClick={() => window.open(item.link, '_blank')}
+          >
+            En savoir plus <ExternalLink size={14} />
+          </button>
         </div>
       </div>
+    ))}
+  </div>
+</div>
 
       {/* --- POURQUOI S'ASSURER (MODAL ADDED) --- */}
       <div style={{ marginTop: '50px', backgroundColor: '#f0f9ff', padding: '40px 20px', borderRadius: '30px' }}>
@@ -136,7 +158,7 @@ function Accueil() {
             </div>
           </div>
           {/* Redirection vers WhatsApp ou Contact */}
-          <a href="https://wa.me/24100000000" style={{textDecoration: 'none'}}>
+          <a href="https://wa.me/24174001835" style={{textDecoration: 'none'}}>
             <button className="btn-hover" style={styles.primaryBtn}>Obtenir mon devis gratuit <ArrowRight size={18} /></button>
           </a>
         </div>
