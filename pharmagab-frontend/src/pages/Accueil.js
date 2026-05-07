@@ -16,7 +16,7 @@ import saison from '../assets/saison.png';
 import phar from '../assets/phar.jpg';
 
 const images = [pharma, named, acae, gab];
-const animatedTexts = ["Trouvez votre santé instantanément.", "Les gardes de Libreville à Port-Gentil.", "PharmaGab, votre allié bien-être."];
+const animatedTexts = ["Trouvez votre santé instantanément.", "Les gardes de Libreville et à l'intérieur du pays.", "PharmaGab, votre allié bien-être."];
 
 const popularPharmacies = [
   { id: 1, nom: "Pharmacie Sainte Marie", quartier: "Bd Triomphal", tel: "011740052", img: pharma },
@@ -28,7 +28,7 @@ function Accueil() {
   const [currentImage, setCurrentImage] = useState(0);
   const [currentText, setCurrentText] = useState(0);
   const [selectedPharmacy, setSelectedPharmacy] = useState(null);
-  const [infoModal, setInfoModal] = useState(null); // Pour Fiabilité / Communauté
+  const [infoModal, setInfoModal] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,16 +38,15 @@ function Accueil() {
     return () => clearInterval(timer);
   }, []);
 
-  // Données pour le modal de réassurance
   const reassurances = {
     fiabilite: {
       title: "98% de Fiabilité Garantie",
-      text: "Nos données de garde sont synchronisées quotidiennement avec l'Ordre National des Pharmaciens du Gabon. Vous évitez ainsi les déplacements inutiles nocturnes.",
+      text: "Nos données de garde sont synchronisées quotidiennement avec l'Ordre National des Pharmaciens du Gabon.",
       icon: <CheckCircle color="#10b981" size={40} />
     },
     communaute: {
       title: "Une Communauté Engagée",
-      text: "Rejoignez plus de 10 000 Gabonais qui utilisent PharmaGab pour signaler les ruptures de stocks et aider les autres patients à trouver leurs médicaments.",
+      text: "Rejoignez plus de 10 000 Gabonais qui utilisent PharmaGab pour s'entraider.",
       icon: <Users color="#3b82f6" size={40} />
     }
   };
@@ -60,13 +59,14 @@ function Accueil() {
         .hover-scale:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
         .btn-hover:hover { filter: brightness(1.1); transform: scale(1.05); transition: 0.2s; }
         .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .check-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; color: #475569; font-size: 14px; }
       `}</style>
 
       {/* SECTION HÉROS */}
       <div style={{ ...styles.hero, backgroundImage: `url(${images[currentImage]})` }}>
         <div style={styles.heroOverlay}>
           <div className="container">
-            <Link to="/" style={styles.logoLink}><div style={styles.logoContainer}><UserRound size={35} color="var(--gab-yellow)" /><Pill size={18} color="white" style={styles.pillIcon} /></div></Link>
+            <Link to="/" style={styles.logoLink}><div style={styles.logoContainer}><UserRound size={35} color="#fbbf24" /><Pill size={18} color="white" style={styles.pillIcon} /></div></Link>
             <h2 style={styles.animatedText}>{animatedTexts[currentText]}</h2>
             <div style={styles.searchContainer}>
               <Search style={styles.searchIcon} size={20} color="#9ca3af" />
@@ -76,9 +76,9 @@ function Accueil() {
         </div>
       </div>
 
-      {/* SECTION PHARMACIES POPULAIRES (FIXED CLIC) */}
+      {/* SECTION PHARMACIES POPULAIRES */}
       <div className="container" style={{ marginTop: '30px' }}>
-        <div style={styles.sectionHeader}><Star color="var(--gab-yellow)" fill="var(--gab-yellow)" size={18} /><h3 style={styles.sectionTitle}>Pharmacies Populaires</h3></div>
+        <div style={styles.sectionHeader}><Star color="#fbbf24" fill="#fbbf24" size={18} /><h3 style={styles.sectionTitle}>Pharmacies Populaires</h3></div>
         <div style={styles.popList}>
           {popularPharmacies.map((p) => (
             <div key={p.id} className="hover-scale" style={styles.popCard}>
@@ -90,12 +90,7 @@ function Accueil() {
                   <div style={styles.popInfo}><Phone size={12} /> {p.tel}</div>
                 </div>
               </div>
-              {/* Le bouton a maintenant sa propre fonction onClick isolée */}
-              <button 
-                className="btn-hover" 
-                style={styles.detailsBtn} 
-                onClick={(e) => { e.stopPropagation(); setSelectedPharmacy(p); }}
-              >
+              <button className="btn-hover" style={styles.detailsBtn} onClick={(e) => { e.stopPropagation(); setSelectedPharmacy(p); }}>
                 Détails
               </button>
             </div>
@@ -104,45 +99,76 @@ function Accueil() {
       </div>
 
       {/* ACTUALITÉS */}
-<div className="container" style={{ marginTop: '40px' }}>
-  <h3 style={styles.sectionTitle}>Actualités & Conseils</h3>
-  <div style={styles.newsGrid}>
-    {[ 
-      { 
-        img: cmgs, 
-        t: "CNAMGS", 
-        link: "https://www.cnamgs.ga/" // Lien officiel
-      }, 
-      { 
-        img: saison, 
-        t: "Santé", 
-        link: "https://www.sante.gouv.ga/" // Ministère de la santé
-      }, 
-      { 
-        img: phar, 
-        t: "Digital", 
-        link: "https://www.finances.gouv.ga/ministere/le-ministere/missions-et-organisation/le-numerique" // Exemple Digital
-      } 
-    ].map((item, idx) => (
-      <div key={idx} className="hover-scale" style={styles.newsCard}>
-        <div style={{ ...styles.newsThumb, backgroundImage: `url(${item.img})` }}></div>
-        <div style={styles.newsContent}>
-          <h4 style={styles.newsTitle}>{item.t} au Gabon...</h4>
-          {/* Modification ici : ajout du onClick pour ouvrir le lien */}
-          <button 
-            style={styles.newsLink} 
-            onClick={() => window.open(item.link, '_blank')}
-          >
-            En savoir plus <ExternalLink size={14} />
-          </button>
+      <div className="container" style={{ marginTop: '40px' }}>
+        <h3 style={styles.sectionTitle}>Actualités & Conseils</h3>
+        <div style={styles.newsGrid}>
+          {[ 
+            { img: cmgs, t: "CNAMGS", link: "https://www.cnamgs.ga/" }, 
+            { img: saison, t: "Santé", link: "https://www.sante.gouv.ga/" }, 
+            { img: phar, t: "Digital", link: "https://www.finances.gouv.ga/ministere/le-ministere/missions-et-organisation/le-numerique" } 
+          ].map((item, idx) => (
+            <div key={idx} className="hover-scale" style={styles.newsCard}>
+              <div style={{ ...styles.newsThumb, backgroundImage: `url(${item.img})` }}></div>
+              <div style={styles.newsContent}>
+                <h4 style={styles.newsTitle}>{item.t} au Gabon...</h4>
+                <button style={styles.newsLink} onClick={() => window.open(item.link, '_blank')}>
+                  En savoir plus <ExternalLink size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
 
-      {/* --- POURQUOI S'ASSURER (MODAL ADDED) --- */}
-      <div style={{ marginTop: '50px', backgroundColor: '#f0f9ff', padding: '40px 20px', borderRadius: '30px' }}>
+      {/* SECTION INNOVATION GABONAISE (EXISTANTE) */}
+      <div style={{ marginTop: '40px', padding: '20px' }}>
+        <div className="container" style={styles.expertSection}>
+          <div style={styles.expertTextContent}>
+            <div style={styles.badge}>Innovation Gabonaise</div>
+            <h2 style={{ fontSize: '24px', color: 'white', fontWeight: 'bold', margin: '15px 0' }}>Experts Pharma</h2>
+            <p style={{ color: '#e2e8f0', fontSize: '13px' }}>Pharmaciens locaux engagés pour votre bien-être.</p>
+          </div>
+          <div style={{ ...styles.expertImg, backgroundImage: `url(${phar})`, filter: 'sepia(0.4) brightness(0.9)' }}></div>
+        </div>
+      </div>
+
+      {/* --- NOUVELLE SECTION TYPE "APRIL" (MODÈLE SANTÉ) --- */}
+      <div className="container" style={{ marginTop: '40px', marginBottom: '40px' }}>
+        <div className="hover-scale" style={styles.aprilContainer}>
+          <div style={styles.aprilLeft}>
+            <div style={{ display: 'flex', gap: '4px', marginBottom: '10px' }}>
+              {[1, 2, 3, 4, 5].map(s => <Star key={s} size={16} fill="#fbbf24" color="#fbbf24" />)}
+              <span style={{ fontSize: '14px', fontWeight: 'bold', marginLeft: '10px' }}>92% de clients satisfaits</span>
+            </div>
+            
+            <h2 style={styles.aprilTitle}>Complémentaire santé <span style={{color: '#1e3a8a'}}>PHARMAGAB</span></h2>
+            
+            <ul className="check-list" style={{ listStyle: 'none', padding: 0 }}>
+              <li>
+                <CheckCircle size={20} color="#3b82f6" /> 
+                <span>Une <b>application web</b> pour trouver vos pharmacies de garde et vérifier les stocks en temps réel.</span>
+              </li>
+              <li>
+                <CheckCircle size={20} color="#3b82f6" /> 
+                <span><b>Téléconsultation :</b> accès aux conseils d'experts pharmaciens 7j/7 (Gabon uniquement).</span>
+              </li>
+              <li>
+                <CheckCircle size={20} color="#3b82f6" /> 
+                <span>Votre <b>prise en charge CNAMGS</b> facilitée grâce à notre réseau de partenaires agréés.</span>
+              </li>
+            </ul>
+
+            <button className="btn-hover" style={styles.aprilBtn} onClick={() => window.open('https://wa.me/+241 74 00 18 35', '_blank')}>
+              Obtenir un tarif <ArrowRight size={18} />
+            </button>
+          </div>
+
+          <div style={{ ...styles.aprilRight, backgroundImage: `url(${named})` }}></div>
+        </div>
+      </div>
+
+      {/* --- POURQUOI S'ASSURER --- */}
+      <div style={{ backgroundColor: '#f0f9ff', padding: '40px 20px', borderRadius: '30px' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: '22px', fontWeight: 'bold' }}>Pourquoi s'assurer avec PharmaGab ?</h2>
           <div style={styles.grid2}>
@@ -157,26 +183,13 @@ function Accueil() {
               <p style={{ fontSize: '11px', color: '#64748b' }}>Cliquez pour voir les détails</p>
             </div>
           </div>
-          {/* Redirection vers WhatsApp ou Contact */}
-          <a href="https://wa.me/24174001835" style={{textDecoration: 'none'}}>
+          <a href="https://wa.me/+241 74 00 18 35" style={{textDecoration: 'none'}}>
             <button className="btn-hover" style={styles.primaryBtn}>Obtenir mon devis gratuit <ArrowRight size={18} /></button>
           </a>
         </div>
       </div>
 
-      {/* SECTION EXPERTS */}
-      <div style={{ marginTop: '40px', padding: '20px' }}>
-        <div className="container" style={styles.expertSection}>
-          <div style={styles.expertTextContent}>
-            <div style={styles.badge}>Innovation Gabonaise</div>
-            <h2 style={{ fontSize: '24px', color: 'white', fontWeight: 'bold', margin: '15px 0' }}>Experts Pharma</h2>
-            <p style={{ color: '#e2e8f0', fontSize: '13px' }}>Pharmaciens locaux engagés pour votre bien-être.</p>
-          </div>
-          <div style={{ ...styles.expertImg, backgroundImage: `url(${phar})`, filter: 'sepia(0.4) brightness(0.9)' }}></div>
-        </div>
-      </div>
-
-      {/* --- MODAL INFO (Fiabilité/Communauté) --- */}
+      {/* MODAUX */}
       {infoModal && (
         <div className="modal-overlay" onClick={() => setInfoModal(null)}>
           <div style={styles.infoModalBox} onClick={e => e.stopPropagation()}>
@@ -189,11 +202,10 @@ function Accueil() {
         </div>
       )}
 
-      {/* MODAL PHARMACIE */}
       {selectedPharmacy && (
         <div className="modal-overlay" onClick={() => setSelectedPharmacy(null)}>
           <div style={styles.pharmacyModalBox} onClick={e => e.stopPropagation()}>
-             <img src={selectedPharmacy.img} style={styles.modalFullImg} />
+             <img src={selectedPharmacy.img} style={styles.modalFullImg} alt="pharmacie" />
              <div style={{padding: '20px'}}>
                 <h3>{selectedPharmacy.nom}</h3>
                 <p><MapPin size={16}/> {selectedPharmacy.quartier}</p>
@@ -209,6 +221,7 @@ function Accueil() {
 }
 
 const styles = {
+  // Styles existants conservés...
   hero: { height: '350px', backgroundSize: 'cover', backgroundPosition: 'center', borderBottomLeftRadius: '30px', borderBottomRightRadius: '30px', overflow: 'hidden' },
   heroOverlay: { height: '100%', width: '100%', backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', color: 'white' },
   logoLink: { textDecoration: 'none', display: 'inline-block', marginBottom: '15px' },
@@ -244,7 +257,14 @@ const styles = {
   infoModalBox: { background: 'white', padding: '30px', borderRadius: '30px', maxWidth: '400px', width: '100%', textAlign: 'center', position: 'relative' },
   closeModalInfo: { position: 'absolute', top: '15px', right: '15px', border: 'none', background: 'none', cursor: 'pointer' },
   pharmacyModalBox: { background: 'white', borderRadius: '30px', maxWidth: '500px', width: '100%', overflow: 'hidden' },
-  modalFullImg: { width: '100%', height: '200px', objectFit: 'cover' }
+  modalFullImg: { width: '100%', height: '200px', objectFit: 'cover' },
+
+  // NOUVEAUX STYLES SECTION APRIL
+  aprilContainer: { backgroundColor: 'white', borderRadius: '30px', overflow: 'hidden', display: 'flex', flexWrap: 'wrap', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' },
+  aprilLeft: { flex: 1, padding: '40px', minWidth: '300px' },
+  aprilRight: { flex: 1, minWidth: '300px', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '250px', borderTopLeftRadius: '100px' },
+  aprilTitle: { fontSize: '28px', fontWeight: '800', color: '#1e293b', marginBottom: '20px', lineHeight: '1.2' },
+  aprilBtn: { backgroundColor: '#fbbf24', color: '#1e293b', border: 'none', padding: '12px 25px', borderRadius: '15px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }
 };
 
 export default Accueil;
