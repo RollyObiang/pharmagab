@@ -1,80 +1,111 @@
-// src/components/Navbar.js
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, LayoutGrid, Info, Phone, HelpCircle } from 'lucide-react';
+import { Home, LayoutGrid, Info, Phone, HelpCircle, Menu, X } from 'lucide-react';
 
 function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const navLinks = [
     { to: "/", icon: Home, label: "Accueil" },
-    { to: "/toutes-les-pharmacies", icon: LayoutGrid, label: "Toutes les pharmacies" },
+    { to: "/toutes-les-pharmacies", icon: LayoutGrid, label: "Pharmacies" }, // Label raccourci pour mobile
     { to: "/a-propos", icon: Info, label: "Infos" },
     { to: "/contact", icon: Phone, label: "Contact" },
     { to: "/faq", icon: HelpCircle, label: "FAQ" },
   ];
 
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
     <nav style={styles.nav}>
-      <ul style={styles.ul}>
-        {navLinks.map((link) => (
-          <li key={link.to} style={styles.li}>
-            <NavLink 
-              to={link.to} 
-              style={({ isActive }) => ({
-                ...styles.link,
-                color: isActive ? 'var(--gab-green)' : 'var(--text-gray)',
-                borderBottom: isActive ? '3px solid var(--gab-green)' : '3px solid transparent',
-              })}
-            >
-              {({ isActive }) => (
-                <>
-                  <link.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  <span style={styles.label}>{link.label}</span>
-                </>
-              )}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      <div style={styles.container}>
+        {/* Logo ou Titre à gauche sur mobile */}
+        <div style={styles.logoMobile}>PharmaGab</div>
+
+        {/* Bouton Burger - Apparaît uniquement sur petit écran via CSS ou logique inline */}
+        <button onClick={toggleMenu} style={styles.burgerButton}>
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        {/* Liste des liens - Conditionnelle sur mobile */}
+        <ul style={{ 
+          ...styles.ul, 
+          display: isMenuOpen ? 'flex' : (window.innerWidth > 768 ? 'flex' : 'none') 
+        }}>
+          {navLinks.map((link) => (
+            <li key={link.to} style={styles.li}>
+              <NavLink 
+                to={link.to} 
+                onClick={() => setIsMenuOpen(false)} // Ferme le menu au clic
+                style={({ isActive }) => ({
+                  ...styles.link,
+                  color: isActive ? 'var(--gab-green)' : 'var(--text-gray)',
+                  borderBottom: window.innerWidth > 768 && isActive ? '3px solid var(--gab-green)' : '3px solid transparent',
+                })}
+              >
+                {({ isActive }) => (
+                  <>
+                    <link.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                    <span style={styles.label}>{link.label}</span>
+                  </>
+                )}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 }
 
 const styles = {
   nav: {
-    /* CHANGEMENT ICI : On enlève le fixed bottom */
     position: 'sticky',
-    top: '0px', // Se colle en haut au scroll si besoin
+    top: '0px',
     width: '100%',
     backgroundColor: 'white',
     boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-    zIndex: 99,
-    // On enlève les arrondis du haut car elle est maintenant collée au header
-    borderTopLeftRadius: '0px',
-    borderTopRightRadius: '0px',
-    borderBottom: '1px solid #f0f0f0',
+    zIndex: 1000,
+  },
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '0 15px',
+    height: '60px',
+  },
+  logoMobile: {
+    fontWeight: '800',
+    color: 'var(--gab-green)',
+    fontSize: '18px',
+  },
+  burgerButton: {
+    display: window.innerWidth > 768 ? 'none' : 'block', // Simple mais efficace
+    background: 'none',
+    border: 'none',
+    color: 'var(--gab-green)',
+    cursor: 'pointer',
   },
   ul: { 
+    // Sur desktop : ligne horizontale
+    // Sur mobile (quand display: flex) : on va forcer le CSS via index.css pour le menu vertical
     display: 'flex', 
-    justifyContent: 'center', // On centre les éléments pour un look plus "web"
-    gap: '30px', // Espace entre les boutons
+    gap: '20px',
     alignItems: 'center', 
-    padding: '0 10px',
-    margin: 0,
     listStyle: 'none',
-    maxWidth: '1200px', // Largeur max pour les grands écrans
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    margin: 0,
+    padding: 0,
   },
   li: { textAlign: 'center' },
   link: { 
     display: 'flex', 
-    flexDirection: 'row', // Icône et texte côte à côte pour gagner de la place en hauteur
+    flexDirection: 'row', 
     alignItems: 'center', 
     gap: '8px', 
-    fontSize: '13px', 
+    fontSize: '14px', 
     fontWeight: '700', 
-    padding: '15px 5px', // Espace pour cliquer
-    transition: 'all 0.3s ease',
+    padding: '10px 5px',
     textDecoration: 'none',
   },
   label: { display: 'inline-block' }

@@ -108,3 +108,18 @@ ul { list-style: none; padding: 0; margin: 0; }
     font-size: 24px !important;
   }
 }
+
+@media (max-width: 768px) {
+  /* On force le menu à devenir vertical et à prendre toute la largeur */
+  nav ul {
+    position: absolute;
+    top: 60px; /* Hauteur de la navbar */
+    left: 0;
+    width: 100%;
+    flex-direction: column !important;
+    background-color: white;
+    padding: 20px 0 !important;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+    gap: 15px !important;
+  }
+}
