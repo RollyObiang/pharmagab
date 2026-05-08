@@ -18,6 +18,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; padding: 0; margin: 0; }
 
@@ -43,10 +49,13 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 /* --- CLASSES RÉUTILISABLES --- */
 .container {
-  max-width: 600px; /* Mobile-first max width */
+  width: 95%;           /* Prend presque tout l'écran sur mobile */
+  max-width: 1200px;    /* S'élargit sur ordinateur */
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;        /* Réduit un peu le padding pour gagner de la place */
+  box-sizing: border-box; /* Très important pour éviter les débordements */
 }
+
 
 .badge {
   padding: 4px 10px;
@@ -71,3 +80,31 @@ ul { list-style: none; padding: 0; margin: 0; }
   transition: background 0.2s;
 }
 .btn-primary:hover { background-color: #2a5a9e; }
+
+/* --- RESPONSIVE DESIGN --- */
+
+/* Téléphones (écrans de moins de 768px) */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  /* Si tu as des cartes de pharmacies en ligne (row), on les met en colonne */
+  .pharmacy-card {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  /* On agrandit les boutons pour qu'ils soient faciles à cliquer au doigt */
+  .btn-primary {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  /* On ajuste la taille des titres pour qu'ils ne prennent pas tout l'écran */
+  h1 {
+    font-size: 24px !important;
+  }
+}
