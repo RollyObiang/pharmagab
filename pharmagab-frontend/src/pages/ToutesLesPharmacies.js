@@ -18,7 +18,7 @@ function ToutesLesPharmacies() {
   const fetchPharmacies = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/pharmacies');
+      const response = await fetch('https://pharmagab-brn6.vercel.app/api/pharmacies');
       const data = await response.json();
       
       const formattedData = data.map(p => ({
@@ -46,7 +46,7 @@ function ToutesLesPharmacies() {
         try {
           setLoading(true);
           // On appelle notre nouvelle super route backend de proximité !
-          const response = await fetch(`http://localhost:5000/api/pharmacies/proximite?lat=${lat}&lng=${lng}`);
+          const response = await fetch(`https://pharmagab-brn6.vercel.app/api/pharmacies/proximite?lat=${lat}&lng=${lng}`);
           const data = await response.json();
           
           const formattedData = data.map(p => ({
