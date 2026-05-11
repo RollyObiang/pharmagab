@@ -93,9 +93,19 @@ function Auth() {
               <select style={styles.input} required>
                 <option value="">Votre quartier...</option>
                 <option value="acae">Acae</option>
-                <option value="okala">Okala</option>
+                <option value="akebe">Akébé</option>
+                <option value="batterie_4">Batterie IV</option>
+                <option value="centre_ville">Centre Ville</option>
+                <option value="charbonnages">Charbonnages</option>
                 <option value="glass">Glass</option>
+                <option value="lalala">Lalala</option>
+                <option value="louis">Louis</option>
+                <option value="nzeng_ayong">Nzeng Ayong</option>
+                <option value="okala">Okala</option>
+                <option value="oloumi">Oloumi</option>
                 <option value="owendo">Owendo</option>
+                <option value="pk8">PK 8</option>
+                <option value="pk12">PK 12</option>
               </select>
             </div>
           )}

@@ -1,40 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Clock3, Phone, Navigation, ShieldCheck, X, Star, Search, Map as MapIcon, LocateFixed, CheckCircle2, BellRing } from 'lucide-react';
-import { pharmaciesLibreville } from '../data/pharmacies'; 
 
 function ToutesLesPharmacies() {
+  const [pharmacies, setPharmacies] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedPharmacy, setSelectedPharmacy] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [userLocation, setUserLocation] = useState(null);
-  const [showSubscriptionSuccess, setShowSubscriptionSuccess] = useState(false); // Nouvel état
+  const [showSubscriptionSuccess, setShowSubscriptionSuccess] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState({ show: false, type: '', message: '' }); // Nouvel état pour l'alerte pro
 
-  // 1. Fonction pour obtenir la position GPS réelle
+  // Charger toutes les pharmacies au démarrage depuis le Backend
+  useEffect(() => {
+    fetchPharmacies();
+  }, []);
+
+  const fetchPharmacies = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:5000/api/pharmacies');
+      const data = await response.json();
+      
+      const formattedData = data.map(p => ({
+        ...p,
+        isGarde: p.is_garde,
+        // Si on n'a pas la distance GPS, on simule une distance pour l'affichage par défaut (ou on affiche "-" )
+        km: p.distance ? parseFloat(p.distance).toFixed(1) : (Math.random() * 5 + 1).toFixed(1)
+      }));
+      setPharmacies(formattedData);
+      setLoading(false);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des pharmacies:", error);
+      setLoading(false);
+    }
+  };
+
+  // 1. Fonction pour obtenir la position GPS réelle et appeler l'API de proximité
   const getNearbyPharmacies = () => {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-        alert("Localisation activée ! Les pharmacies les plus proches s'affichent en tête.");
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setUserLocation({ lat, lng });
+        
+        try {
+          setLoading(true);
+          // On appelle notre nouvelle super route backend de proximité !
+          const response = await fetch(`http://localhost:5000/api/pharmacies/proximite?lat=${lat}&lng=${lng}`);
+          const data = await response.json();
+          
+          const formattedData = data.map(p => ({
+            ...p,
+            isGarde: p.is_garde,
+            km: parseFloat(p.distance).toFixed(1) // La vraie distance calculée par PostgreSQL !
+          }));
+          setPharmacies(formattedData);
+          setLoading(false);
+          
+          // ALERTE PRO AU LIEU DE alert()
+          setGpsStatus({ show: true, type: 'success', message: "Localisation activée ! Les pharmacies les plus proches s'affichent en tête." });
+          setTimeout(() => setGpsStatus({ show: false, type: '', message: '' }), 3500);
+
+        } catch (error) {
+          console.error("Erreur lors du calcul de proximité:", error);
+          setLoading(false);
+        }
+
       }, () => {
-        alert("Impossible d'accéder à votre position. Vérifiez vos paramètres.");
+        // ALERTE PRO AU LIEU DE alert()
+        setGpsStatus({ show: true, type: 'error', message: "Impossible d'accéder à votre position. Vérifiez vos paramètres." });
+        setTimeout(() => setGpsStatus({ show: false, type: '', message: '' }), 3500);
       });
     }
   };
 
-  // Fonction pour gérer l'abonnement pro
   const handleSubscribe = (pharmaName) => {
     setShowSubscriptionSuccess(true);
-    // On cache le message après 3 secondes
     setTimeout(() => {
       setShowSubscriptionSuccess(false);
     }, 3000);
   };
 
-  const filteredPharmacies = pharmaciesLibreville.filter(p => 
-    p.nom.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    p.quartier.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPharmacies = pharmacies.filter(p => 
+    p.nom?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    p.quartier?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const openItinerary = (pharma) => {
@@ -44,6 +93,19 @@ function ToutesLesPharmacies() {
 
   return (
     <div className="animate-fade">
+      {/* MESSAGE GPS (OVERLAY PRO) */}
+      {gpsStatus.show && (
+        <div style={styles.successOverlay} className="animate-slide-up">
+          <div style={styles.successCard}>
+            <div style={{ ...styles.bellIconBox, backgroundColor: gpsStatus.type === 'success' ? '#dcfce7' : '#fee2e2' }}>
+               {gpsStatus.type === 'success' ? <LocateFixed size={40} color="var(--gab-green)" /> : <X size={40} color="#ef4444" />}
+            </div>
+            <h3 style={styles.successTitle}>{gpsStatus.type === 'success' ? 'Position trouvée !' : 'Erreur GPS'}</h3>
+            <p style={styles.successSub}>{gpsStatus.message}</p>
+          </div>
+        </div>
+      )}
+
       {/* MESSAGE DE SUCCÈS ABONNEMENT (OVERLAY) */}
       {showSubscriptionSuccess && (
         <div style={styles.successOverlay} className="animate-slide-up">

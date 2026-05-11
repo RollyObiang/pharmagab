@@ -1,14 +1,15 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+// On utilise DATABASE_URL s'il existe (pour Neon), sinon on garde l'ancienne config (pour le local)
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Obligatoire pour Neon en mode sécurisé
+  }
 });
 
+module.exports = pool;
 // --- AJOUT DU TEST DE CONNEXION ---
 pool.connect((err, client, release) => {
   if (err) {
