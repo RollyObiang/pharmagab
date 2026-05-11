@@ -120,7 +120,10 @@ function Accueil() {
           {[ 
             { img: cmgs, t: "CNAMGS", link: "https://www.cnamgs.ga/" }, 
             { img: saison, t: "Santé", link: "https://www.sante.gouv.ga/" }, 
-            { img: phar, t: "Digital", link: "https://www.finances.gouv.ga/ministere/le-ministere/missions-et-organisation/le-numerique" } 
+            { img: phar, t: "Digital", link: "https://www.finances.gouv.ga/ministere/le-ministere/missions-et-organisation/le-numerique" },
+            { img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=1000", t: "Prévention Paludisme", link: "https://www.who.int/fr/news-room/fact-sheets/detail/malaria" },
+            { img: "https://images.unsplash.com/photo-1532938911079-1b06ac7ce122?q=80&w=1000", t: "Urgences & SAMU", link: "https://sante.gouv.ga/" },
+            { img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1000", t: "Nutrition & Bien-être", link: "https://www.who.int/fr/news-room/fact-sheets/detail/healthy-diet" }
           ].map((item, idx) => (
             <div key={idx} className="hover-scale" style={styles.newsCard}>
               <div style={{ ...styles.newsThumb, backgroundImage: `url(${item.img})` }}></div>

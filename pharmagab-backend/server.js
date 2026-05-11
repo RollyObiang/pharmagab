@@ -35,6 +35,11 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Serveur PharmaGab lancé sur le port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Serveur PharmaGab lancé sur le port ${PORT}`);
+  });
+}
+
+// Requis par Vercel pour le déploiement serverless
+module.exports = app;
