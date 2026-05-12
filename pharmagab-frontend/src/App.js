@@ -12,6 +12,7 @@ import Accueil from './pages/Accueil';
 import ToutesLesPharmacies from './pages/ToutesLesPharmacies';
 import { APropos, Contact, FAQ } from './pages/Stubs';
 import Auth from './pages/Auth';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -19,10 +20,10 @@ function App() {
       <div className="App" style={styles.appContainer}>
         {/* 1. Le Header en haut */}
         <Header />
-        
+
         {/* 2. La Navbar juste en dessous du Header */}
         <Navbar />
-        
+
         {/* 3. Le contenu principal */}
         <main style={styles.mainContent}>
           <Routes>
@@ -32,8 +33,9 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/connexion" element={<Auth />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
-          
+
           <Footer />
         </main>
       </div>
@@ -53,7 +55,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     // Suppression du paddingBottom car la Navbar n'est plus fixe en bas
-    paddingBottom: '0px', 
+    paddingBottom: '0px',
   }
 };
 

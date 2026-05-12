@@ -33,3 +33,20 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: "Erreur lors de la connexion" });
     }
 };
+
+// Récupérer le profil de l'utilisateur connecté
+exports.getProfile = async (req, res) => {
+    try {
+        // req.user.id viendra d'un middleware (on va le créer juste après)
+        const user = await pool.query(
+            "SELECT id, nom, email, created_at FROM users WHERE id = $1",
+            [req.user.id]
+        );
+
+        if (user.rows.length === 0) return res.status(404).json({ error: "Utilisateur non trouvé" });
+
+        res.json(user.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+};
