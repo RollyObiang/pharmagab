@@ -14,7 +14,7 @@ function Auth() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // On déclenche l'affichage du message pro
     setShowSuccess(true);
 
@@ -40,22 +40,22 @@ function Auth() {
       )}
 
       <div style={styles.authBox}>
-        
+
         <div style={styles.logoWrapper}>
           <Link to="/" style={styles.logoLink}>
             <div style={styles.logoContainer}>
-               <UserRound size={45} color="var(--gab-yellow)" />
-               <Pill size={22} color="var(--gab-yellow)" style={styles.pillIcon} />
+              <UserRound size={45} color="var(--gab-yellow)" />
+              <Pill size={22} color="var(--gab-yellow)" style={styles.pillIcon} />
             </div>
-            <span style={styles.logoText}>Pharma<span style={{color:'var(--gab-yellow)'}}>Gab</span></span>
+            <span style={styles.logoText}>Pharma<span style={{ color: 'var(--gab-yellow)' }}>Gab</span></span>
           </Link>
         </div>
 
         <div style={styles.header}>
           <h2 style={styles.title}>{isLogin ? 'Bon retour !' : 'Créer un compte'}</h2>
           <p style={styles.subtitle}>
-            {isLogin 
-              ? 'Connectez-vous pour accéder à vos pharmacies proches.' 
+            {isLogin
+              ? 'Connectez-vous pour accéder à vos pharmacies proches.'
               : 'Rejoignez PharmaGab pour personnaliser votre santé.'}
           </p>
         </div>
@@ -64,26 +64,26 @@ function Auth() {
           {!isLogin && (
             <div style={styles.inputGroup}>
               <User size={18} style={styles.icon} />
-              <input 
+              <input
                 name="nom"
-                type="text" 
-                placeholder="Nom complet" 
-                style={styles.input} 
+                type="text"
+                placeholder="Nom complet"
+                style={styles.input}
                 onChange={handleInputChange}
-                required 
+                required
               />
             </div>
           )}
 
           <div style={styles.inputGroup}>
             <Mail size={18} style={styles.icon} />
-            <input 
+            <input
               name="email"
-              type="email" 
-              placeholder="Email" 
-              style={styles.input} 
+              type="email"
+              placeholder="Email"
+              style={styles.input}
               onChange={handleInputChange}
-              required 
+              required
             />
           </div>
 
@@ -93,19 +93,58 @@ function Auth() {
               <select style={styles.input} required>
                 <option value="">Votre quartier...</option>
                 <option value="acae">Acae</option>
+                <option value="akanda">Akanda</option>
+                <option value="aeroport">Aéroport</option>
                 <option value="akebe">Akébé</option>
+                <option value="alibandeng">Alibandeng</option>
+                <option value="amities">Amitiés</option>
+                <option value="angondje">Angondjé</option>
+                <option value="awendje">Awendjé</option>
+                <option value="bikele">Bikélé</option>
+                <option value="bas_de_gue_gue">Bas de Gué-Gué</option>
                 <option value="batterie_4">Batterie IV</option>
+                <option value="bel_air">Bel Air</option>
+                <option value="belle_vue">Belle-vue</option>
+                <option value="besieux">Bésieux</option>
                 <option value="centre_ville">Centre Ville</option>
                 <option value="charbonnages">Charbonnages</option>
+                <option value="cite_caistab">Cité Caistab</option>
+                <option value="cite_democratie">Cité de la Démocratie</option>
+                <option value="derriere_la_prison">Derrière la Prison</option>
                 <option value="glass">Glass</option>
+                <option value="gare_routiere">Gare Routière</option>
+                <option value="haut_de_gue_gue">Haut de Gué-Gué</option>
+                <option value="iai">IAI</option>
                 <option value="lalala">Lalala</option>
+                <option value="london">London</option>
                 <option value="louis">Louis</option>
+                <option value="mindoube">Mindoubé</option>
+                <option value="mont_bouet">Mont-Bouët</option>
+                <option value="nomba_domaine">Nomba Domaine</option>
                 <option value="nzeng_ayong">Nzeng Ayong</option>
+                <option value="niali">Niali</option>
                 <option value="okala">Okala</option>
                 <option value="oloumi">Oloumi</option>
+                <option value="ondogo">Ondogo</option>
+                <option value="ozangue">Ozangué</option>
                 <option value="owendo">Owendo</option>
+                <option value="petit_paris">Petit Paris</option>
+                <option value="pk5">PK 5</option>
+                <option value="pk6">PK 6</option>
+                <option value="pk7">PK 7</option>
                 <option value="pk8">PK 8</option>
+                <option value="pk9">PK 9</option>
+                <option value="pk10">PK 10</option>
+                <option value="pk11">PK 11</option>
                 <option value="pk12">PK 12</option>
+                <option value="pk13">PK 13</option>
+                <option value="essassa">Essassa</option>
+                <option value="plain_ciel">Plain Ciel</option>
+                <option value="plaine_niger">Plaine Niger</option>
+                <option value="pont_nomba">Pont Nomba</option>
+                <option value="sainte_anne">Sainte Anne</option>
+                <option value="sotega">Sotéga</option>
+                <option value="toulon">Toulon</option>
               </select>
             </div>
           )}
@@ -133,7 +172,7 @@ function Auth() {
 
 const styles = {
   container: { minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', backgroundColor: '#f9fafb', position: 'relative' },
-  
+
   // STYLES DU MESSAGE DE SUCCÈS
   successOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(255,255,255,0.9)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' },
   successCard: { textAlign: 'center', backgroundColor: 'white', padding: '40px', borderRadius: '30px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' },
