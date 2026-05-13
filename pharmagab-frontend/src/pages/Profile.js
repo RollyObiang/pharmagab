@@ -124,7 +124,7 @@ const Profile = () => {
             ) : (
                 <div style={styles.card}>
                     <p>Veuillez vous connecter pour voir votre profil.</p>
-                    <button onClick={() => window.location.href = '/login'} style={styles.editBtn}>Connexion</button>
+                    <button onClick={() => window.location.href = '/auth'} style={styles.editBtn}>Connexion</button>
                 </div>
             )}
         </div>
@@ -137,27 +137,21 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '90vh',
-        backgroundColor: '#f4f7f6',
-        padding: '10px'
-    },
-    loaderContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '80vh'
-    },
-    spinner: {
-        animation: 'spin 1s linear infinite',
-        color: '#009e60'
+        width: '100%',
+        minHeight: '80vh', // Prend presque tout l'écran
+        padding: '20px',
+        backgroundColor: '#f8f9fa',
+        boxSizing: 'border-box'
     },
     card: {
         backgroundColor: 'white',
-        borderRadius: '24px',
-        boxShadow: '0 15px 35px rgba(0,0,0,0.05)',
-        maxWidth: '400px',
-        transition: 'all 0.3s ease'
+        borderRadius: '20px',
+        boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+        width: '100%',
+        maxWidth: '450px', // Largeur max pour ne pas que ce soit trop grand sur PC
+        padding: '30px',
+        textAlign: 'center',
+        marginTop: '20px' // Espace par rapport à la Navbar
     },
     header: {
         marginBottom: '20px',

@@ -12,16 +12,40 @@ function Auth() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // On déclenche l'affichage du message pro
-    setShowSuccess(true);
+    // Déterminer l'URL selon si c'est connexion ou inscription
+    const endpoint = isLogin ? 'login' : 'register';
+    const url = `https://pharmagab-brn6.vercel.app/api/auth/${endpoint}`;
 
-    // Redirection après 2 secondes pour laisser le temps de lire
-    setTimeout(() => {
-      navigate('/');
-    }, 2500);
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // 1. SAUVEGARDER LE TOKEN (C'est ça qui manquait !)
+        localStorage.setItem('token', data.token);
+
+        // 2. Afficher le succès
+        setShowSuccess(true);
+
+        // 3. Rediriger vers le profil après un petit délai
+        setTimeout(() => {
+          navigate('/profile');
+        }, 2000);
+      } else {
+        alert(data.error || data.message || "Une erreur est survenue");
+      }
+    } catch (err) {
+      console.error("Erreur auth:", err);
+      alert("Impossible de contacter le serveur.");
+    }
   };
 
   return (
