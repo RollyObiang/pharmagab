@@ -13,4 +13,10 @@ router.post('/login', authController.login);
 
 router.get('/me', authMiddleware, authController.getProfile);
 
+router.put('/update', authMiddleware, authController.updateProfile);
+
+router.post('/favorites', authMiddleware, authController.addFavorite);
+
+router.get('/favorites', authMiddleware, authController.getFavorites);
+
 module.exports = router;
