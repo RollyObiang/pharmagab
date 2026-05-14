@@ -90,3 +90,33 @@ exports.updateProfile = async (req, res) => {
         res.status(500).json({ error: "Erreur lors de la mise à jour du profil" });
     }
 };
+
+// --- AJOUTER UN FAVORI ---
+exports.addFavorite = async (req, res) => {
+    const { pharmacie_id, nom_pharmacie, quartier_pharmacie } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const newFavorite = await pool.query(
+            "INSERT INTO favorites (user_id, pharmacie_id, nom_pharmacie, quartier_pharmacie) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING RETURNING *",
+            [userId, pharmacie_id, nom_pharmacie, quartier_pharmacie]
+        );
+        res.status(201).json(newFavorite.rows[0]);
+    } catch (err) {
+        console.error("Erreur favoris:", err.message);
+        res.status(500).json({ error: "Erreur lors de l'ajout au favoris" });
+    }
+};
+
+// --- RÉCUPÉRER LES FAVORIS ---
+exports.getFavorites = async (req, res) => {
+    try {
+        const favs = await pool.query(
+            "SELECT * FROM favorites WHERE user_id = $1 ORDER BY created_at DESC",
+            [req.user.id]
+        );
+        res.json(favs.rows);
+    } catch (err) {
+        res.status(500).json({ error: "Erreur lors de la récupération des favoris" });
+    }
+};
