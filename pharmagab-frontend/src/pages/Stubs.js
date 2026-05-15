@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Mail, Phone, MessageCircle, HelpCircle, 
-  ExternalLink, Globe, ShieldCheck, Send, User, MessageSquare
+import {
+  Mail, Phone, MessageCircle, HelpCircle,
+  ExternalLink, Globe, ShieldCheck, Send, User, MessageSquare,
+  Plus, Minus, Target, Award, Shield, Activity // Ajout des icônes pour l'accordéon
 } from 'lucide-react';
 
 // Importation des images
@@ -31,17 +32,48 @@ const PageWrapper = ({ title, subtitle, children, image }) => (
 // --- PAGE À PROPOS ---
 export const APropos = () => {
   const [activeSlide, setActiveSlide] = useState(0);
+  // État pour gérer l'ouverture de l'accordéon
+  const [openSection, setOpenSection] = useState(null);
+
   const slides = [
     { img: pharmaImg, text: "Un réseau de plus de 200 pharmacies à travers le Gabon." },
     { img: acae, text: "Une mise à jour en temps réel des pharmacies de garde." },
     { img: named, text: "Votre santé accessible 24h/24 et 7j/7." }
-    
   ];
 
   const testimonials = [
     { name: "OBAME J.", role: "Libreville", text: "PharmaGab m'a sauvé la vie une nuit de dimanche !" },
     { name: "MOUSSAVOU S.", role: "Port-Gentil", text: "Très simple à utiliser, les numéros sont toujours à jour." },
     { name: "KASSA M.", role: "Franceville", text: "Enfin une solution moderne pour nos pharmacies au Gabon." }
+  ];
+
+  // Données de l'accordéon (style OPN)
+  const accordionSections = [
+    {
+      id: 'vision',
+      title: 'Vision',
+      icon: <Target size={18} color="var(--gab-green)" />,
+      content: "Mettre fin aux manques de médicaments et autres produits de santé essentiels dans toutes les formations sanitaires du Gabon d'ici à 2030."
+    },
+    {
+      id: 'ambition',
+      title: 'Ambition',
+      icon: <Award size={18} color="var(--gab-green)" />,
+      content: "Se hisser aux standards des meilleures centrales d'achat africaines, et faire de PharmaGab un véritable pôle d'excellence en santé."
+    },
+    {
+      id: 'mission',
+      title: 'Mission Principale',
+      icon: <Shield size={18} color="var(--gab-green)" />,
+      content: "Assurer l'accessibilité des médicaments de qualité sur toute l'étendue du territoire national, à moindre coût pour les populations gabonaises."
+    },
+    {
+      id: 'objectif',
+      title: 'Objectifs Stratégiques',
+      icon: <Award size={18} color="var(--gab-green)" />,
+      content: "Rendre l'Application Web disponible et accessible dans tout l'étandus du térritoire national en contribuant au développement d'une chaine d'approvisionnement nationale  ."
+    }
+
   ];
 
   useEffect(() => {
@@ -61,13 +93,13 @@ export const APropos = () => {
       </div>
 
       <div style={styles.card}>
-        <h3 style={{marginTop: 0, color: 'var(--gab-green)'}}>Qui sommes-nous ?</h3>
+        <h3 style={{ marginTop: 0, color: 'var(--gab-green)' }}>Qui sommes-nous ?</h3>
         <p style={styles.text}>
-          <b>PharmaGab</b> est née d'un constat simple : il est trop difficile de trouver une pharmacie ouverte en cas d'urgence la nuit ou les jours fériés au Gabon. 
+          <b>PharmaGab</b> est née d'un constat simple : il est trop difficile de trouver une pharmacie ouverte en cas d'urgence la nuit ou les jours fériés au Gabon.
           <br /><br />
           Nous travaillons en étroite collaboration avec les syndicats de pharmaciens pour offrir une information fiable et géolocalisée. Notre vision est de devenir le hub de santé numérique de référence en Afrique Centrale.
         </p>
-        
+
         <div style={styles.statsGrid}>
           <a href="https://www.union.sonapresse.com" target="_blank" rel="noreferrer" style={styles.statItem}>
             <Globe size={24} color="var(--gab-blue)" />
@@ -80,20 +112,43 @@ export const APropos = () => {
         </div>
       </div>
 
-      <div style={{marginTop: '30px'}}>
+      {/* --- NOUVELLE SECTION ACCORDÉON (STYLE VIDÉO) --- */}
+      <div style={{ marginTop: '25px', backgroundColor: 'white', borderRadius: '24px', padding: '10px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
+        {accordionSections.map((section) => (
+          <div key={section.id} style={{ borderBottom: section.id !== 'mission' ? '1px solid #eee' : 'none' }}>
+            <button
+              onClick={() => setOpenSection(openSection === section.id ? null : section.id)}
+              style={styles.accordionHeader}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {section.icon}
+                <span style={{ fontWeight: '700', fontSize: '15px', color: 'var(--text-dark)' }}>{section.title}</span>
+              </div>
+              {openSection === section.id ? <Minus size={18} /> : <Plus size={18} />}
+            </button>
+            {openSection === section.id && (
+              <div style={{ padding: '0 15px 15px 45px', fontSize: '14px', color: '#4b5563', lineHeight: '1.5' }}>
+                {section.content}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: '30px' }}>
         <h4 style={styles.sectionTitle}>Témoignages utilisateurs</h4>
         <div style={styles.testimonialWrapper}>
           <div style={styles.testimonialScroll}>
             {testimonials.map((t, i) => (
               <div key={i} style={styles.testimonialCard} className="hover-card">
-                <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'10px'}}>
-                  <div style={styles.avatar}><User size={16} color="white"/></div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <div style={styles.avatar}><User size={16} color="white" /></div>
                   <div>
-                    <div style={{fontWeight:'700', fontSize:'14px'}}>{t.name}</div>
-                    <div style={{fontSize:'12px', color:'var(--text-gray)'}}>{t.role}</div>
+                    <div style={{ fontWeight: '700', fontSize: '14px' }}>{t.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-gray)' }}>{t.role}</div>
                   </div>
                 </div>
-                <p style={{fontSize:'13px', fontStyle:'italic', margin:0}}>"{t.text}"</p>
+                <p style={{ fontSize: '13px', fontStyle: 'italic', margin: 0 }}>"{t.text}"</p>
               </div>
             ))}
           </div>
@@ -102,6 +157,8 @@ export const APropos = () => {
     </PageWrapper>
   );
 };
+
+// ... LE RESTE DU FICHIER (Contact, FAQ et Styles) RESTE IDENTIQUE ...
 
 // --- PAGE CONTACT ---
 export const Contact = () => {
@@ -157,37 +214,37 @@ export const Contact = () => {
         </div>
 
         <form onSubmit={handleEmailSubmit} style={styles.formCard}>
-          <h4 style={{marginTop: 0, marginBottom: '20px'}}>Envoyer un message</h4>
+          <h4 style={{ marginTop: 0, marginBottom: '20px' }}>Envoyer un message</h4>
           <div style={styles.inputGroup}>
             <User size={16} style={styles.inputIcon} />
-            <input 
-              name="nom" 
-              type="text" 
-              placeholder="Votre nom" 
-              style={styles.input} 
-              required 
+            <input
+              name="nom"
+              type="text"
+              placeholder="Votre nom"
+              style={styles.input}
+              required
               value={formData.nom}
               onChange={handleChange}
             />
           </div>
           <div style={styles.inputGroup}>
             <Mail size={16} style={styles.inputIcon} />
-            <input 
-              name="email" 
-              type="email" 
-              placeholder="Email" 
-              style={styles.input} 
-              required 
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              style={styles.input}
+              required
               value={formData.email}
               onChange={handleChange}
             />
           </div>
           <div style={styles.inputGroup}>
-            <MessageSquare size={16} style={{...styles.inputIcon, top: '15px'}} />
-            <textarea 
-              name="message" 
-              placeholder="Votre message..." 
-              style={{...styles.input, height: '100px', paddingTop: '12px'}} 
+            <MessageSquare size={16} style={{ ...styles.inputIcon, top: '15px' }} />
+            <textarea
+              name="message"
+              placeholder="Votre message..."
+              style={{ ...styles.input, height: '100px', paddingTop: '12px' }}
               required
               value={formData.message}
               onChange={handleChange}
@@ -208,16 +265,16 @@ export const FAQ = () => {
   const questions = [
     { q: "Les gardes sont-elles fiables ?", a: "Oui, nos données sont synchronisées avec le calendrier officiel de l'ordre des pharmaciens.", ref: "https://www.sante.gouv.ga" },
     { q: "Quelles sont les assurances acceptées ?", a: "La majorité des pharmacies acceptent la CNAMGS et les assurances privées comme Ascoma.", ref: "https://www.cnamgs.ga" },
-    { q: "Puis-je commander mes médicaments ?", a: "PharmaGab facilite la localisation, mais l'achat final se fait en pharmacie selon la loi gabonaise.", ref:"https://www.opn-gabon.com/"},
-    { q: "Mécanismes des produits pharmaceutiques ?", a: "Cliquez sur ce lien pour découvrir les mécanismes de traitement et les lois en vigueur.", ref:"https://www.opn-gabon.com/"},
+    { q: "Puis-je commander mes médicaments ?", a: "PharmaGab facilite la localisation, mais l'achat final se fait en pharmacie selon la loi gabonaise.", ref: "https://www.opn-gabon.com/" },
+    { q: "Mécanismes des produits pharmaceutiques ?", a: "Cliquez sur ce lien pour découvrir les mécanismes de traitement et les lois en vigueur.", ref: "https://www.opn-gabon.com/" },
   ];
 
   return (
     <PageWrapper title="FAQ" subtitle="Besoin d'aide ?" image={faqImg}>
       <div style={styles.faqContainer}>
         {questions.map((item, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             style={{ ...styles.faqCard, borderColor: hoverIdx === i ? 'var(--gab-green)' : '#eee' }}
             onMouseEnter={() => setHoverIdx(i)}
             onMouseLeave={() => setHoverIdx(null)}
@@ -267,5 +324,17 @@ const styles = {
   faqCard: { backgroundColor: 'white', padding: '20px', borderRadius: '20px', border: '1px solid #eee' },
   faqQuestion: { fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' },
   faqAnswer: { fontSize: '14px', color: 'var(--text-gray)', marginTop: '8px' },
-  refLink: { fontSize: '11px', color: 'var(--gab-blue)', textDecoration: 'none', fontWeight: '700', marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }
+  refLink: { fontSize: '11px', color: 'var(--gab-blue)', textDecoration: 'none', fontWeight: '700', marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' },
+  // Ajout du style pour le header de l'accordéon
+  accordionHeader: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '15px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    outline: 'none'
+  }
 };
